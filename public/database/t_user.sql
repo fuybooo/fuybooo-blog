@@ -23,6 +23,7 @@ CREATE TABLE `t_user` (
   `id` varchar(100) CHARACTER SET latin1 NOT NULL COMMENT '主键',
   `user_id` varchar(3) CHARACTER SET latin1 NOT NULL,
   `user_name` varchar(20) CHARACTER SET latin1 NOT NULL,
+  `user_password` varchar(255) CHARACTER SET latin1 NOT NULL,
   `user_state` int(1) NOT NULL,
   `user_email` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `user_phone_no` varchar(20) CHARACTER SET latin1 DEFAULT NULL,

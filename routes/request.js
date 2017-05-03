@@ -8,8 +8,7 @@ router.get('/', function (req, res, next) {
     console.error('req', req.query);// 获取get请求参数
     console.error('req', req.body);// 获取post请求参数
 
-    var client = db.connect();
-    db.executeSql(client, 'select * from t_user', function(result){
+    db.executeSql(db.connect(), 'select * from t_user', function(result){
         console.log('执行sql', result);
         var object = {
             a: 'a',
