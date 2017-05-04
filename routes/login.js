@@ -1,10 +1,16 @@
 var express = require('express');
 var db = require('../public/javascripts/common/db-connect');
+var crypto = require('crypto');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-    var username = req.query.username;
+var hasher = crypto.createHash('md5');
+
+
+router.post('/', function (req, res, next) {
+    var username = req.body.username;
+    hasher.update(req.body.password);
+    var hashmsg = hasher.digest('hex');
+    console.log(hashmsg);
     db.executeSql(db.connect(), 'select * from t_user where user_name = \'' + username + '\'', function(result){
         console.log('执行sql', result);
         console.log('typeof result', typeof result);
