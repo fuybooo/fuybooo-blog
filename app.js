@@ -37,6 +37,9 @@ app.use('/save', require('./routes/save'));
 
 app.use('/login', require('./routes/login'));
 app.use('/user', require('./routes/user'));
+var webSocketTest = require('./routes/web-socket-test');
+
+webSocketTest();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
