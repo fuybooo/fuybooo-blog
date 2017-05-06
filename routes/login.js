@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var router = express.Router();
 
 var hasher = crypto.createHash('md5');
-
+var userInfo = null;
 
 router.post('/', function (req, res, next) {
     var username = req.body.username;
@@ -28,9 +28,24 @@ router.post('/', function (req, res, next) {
                 code: 1,
                 msg: '用户名不存在!'
             };
+        }else{
+            userInfo = result;
         }
         res.end(JSON.stringify(data));
     });
 });
-
-module.exports = router;
+var getUser = function(){
+    return userInfo;
+};
+var setUser = function(userData){
+    for(var p in userData){
+        if(p in userInfo){
+            userInfo[p] = userData[p];
+        }
+    }
+};
+module.exports = {
+    router: router,
+    getUser: getUser,
+    setUser: setUser
+};

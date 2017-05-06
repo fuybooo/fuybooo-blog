@@ -6,7 +6,9 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     var username = req.query.username;
     console.log('用户名',username);
-    db.executeSql(db.connect(), 'select * from t_user where user_name = \'' + username + '\'', function(result){
+    var sql = 'select * from t_user where user_name = \'' + username + '\'';
+    console.log('sql',sql);
+    db.executeSql(db.connect(), sql, function(result){
         console.log('执行sql', result);
         var data = {
             code: 0,
@@ -20,6 +22,7 @@ router.get('/', function (req, res, next) {
         }
         res.end(JSON.stringify(data));
     });
+    // res.end(JSON.stringify({a:1}));
 });
 
 module.exports = router;
