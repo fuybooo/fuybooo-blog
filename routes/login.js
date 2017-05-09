@@ -8,7 +8,6 @@ var router = express.Router();
 router.post('/', function (req, res, next) {
     var username = req.body.username;
     var password_md5 = utils.makeMd5(req.body.password);
-    console.log('登录session:',req.session);
     var client = db.connect();
     db.executeSql(client, 'select * from t_user where user_name = \'' + username + '\' and user_password = \'' + password_md5 + '\'', function(result){
         var data = {
