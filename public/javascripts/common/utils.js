@@ -1,28 +1,24 @@
 var crypto = require('crypto');
-
-
+var UUID = require('node-uuid');
 
 var makeMd5 = function(data){
     return crypto.createHash('md5').update(data).digest('hex').toUpperCase();
-} ;
-// var users = {};
-// var currentUser = null;
-// var setCurrentUser = function(user){
-//     currentUser = user;
-// };
-// var getCurrentUser =
-// var getUsers = function(){
-//     return users;
-// };
-// var getUserByUserId = function(userId){
-//     return users[userId];
-// };
-// var addUser = function(user){
-//     users[user.userId] = user;
-// };
-// var deleteUser = function(userId){
-//     users[userId] = null;
-// };
+};
+var getUuid = function(){
+    return UUID.v1();
+};
+var dateFormatter = function(date){
+    var formate = arguments[1] || 'yyyy-MM-dd';
+    var dateValue = '';
+    switch (formate){
+        case 'yyyy-MM-dd':
+            dateValue = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + (date.getDate() + 1)).slice(-2);
+            break;
+    }
+    return dateValue;
+};
 module.exports = {
-    makeMd5: makeMd5
+    makeMd5: makeMd5,
+    getUuid: getUuid,
+    dateFormatter: dateFormatter,
 };

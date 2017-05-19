@@ -50,6 +50,14 @@ app.use('/logout', require('./routes/logout'));
 app.use('/user', require('./routes/user'));
 app.use('/studentsScores', require('./routes/students-scores'));
 app.use('/handleUser', require('./routes/handle-user'));
+// 主题（文章）模块
+app.use('/topic', require('./routes/topic'));
+// 评论模块
+app.use('/comment', require('./routes/comment'));
+// 敏感字
+app.use('/sensitiveWord', require('./routes/sensitive-word'));
+
+
 var webSocket = require('./routes/web-socket').createWebSocket;
 
 webSocket();
