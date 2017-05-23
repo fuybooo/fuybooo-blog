@@ -9,7 +9,6 @@ router.post('/', function (req, res, next) {
 
     var action = req.body.action;
     var sql = '';
-    console.log('打开连接')
     var client = db.connect();
     switch(action) {
         case 'save':

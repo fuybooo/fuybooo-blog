@@ -17,8 +17,15 @@ var dateFormatter = function(date){
     }
     return dateValue;
 };
+var STATUS = {
+        NOT_LOGGED_IN: -1,
+        SUCCESS: 0,
+        ERROR: 1
+    };
+
 module.exports = {
     makeMd5: makeMd5,
     getUuid: getUuid,
     dateFormatter: dateFormatter,
+    STATUS: STATUS
 };
