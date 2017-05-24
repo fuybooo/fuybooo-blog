@@ -9,13 +9,13 @@ router.post('/', function (req, res, next) {
     // 获取用户的session信息
 
     var session_user = req.session.user;
-    if (!session_user) {
-        // 用户未登录
-        res.end(JSON.stringify({
-            code: -1,
-            msg: '未登录'
-        }));
-    }
+    // if (!session_user) {
+    //     // 用户未登录
+    //     res.end(JSON.stringify({
+    //         code: -1,
+    //         msg: '未登录'
+    //     }));
+    // }
 
     var action = req.body.action;
     var sql = '';
@@ -35,7 +35,7 @@ router.post('/', function (req, res, next) {
                 var data = {
                     code: 0,
                     msg: '保存成功'
-                }
+                };
                 if (!result) {
                     data = {
                         code: 1,
@@ -46,6 +46,23 @@ router.post('/', function (req, res, next) {
                 res.end(JSON.stringify(data));
             });
             break;
+        case 'del':
+            var ids = req.body.ids.split(',').join('\',\'');
+            sql = 'delete from t_topic where id in (\'' + ids + '\')';
+            db.executeSql(client, sql, function(result){
+                var data = {
+                    code: 0,
+                    msg: '删除成功'
+                };
+                if(!result){
+                    data = {
+                        code: 1,
+                        msg: '删除失败'
+                    }
+                }
+                client.end();
+                res.end(JSON.stringify(data));
+            })
     }
 
 });
@@ -55,13 +72,13 @@ router.get('/', function (req, res, next) {
     // 获取用户的session信息
 
     var session_user = req.session.user;
-    if (!session_user) {
-        // 用户未登录
-        res.end(JSON.stringify({
-            code: -1,
-            msg: '未登录'
-        }));
-    }
+    // if (!session_user) {
+    //     // 用户未登录
+    //     res.end(JSON.stringify({
+    //         code: -1,
+    //         msg: '未登录'
+    //     }));
+    // }
     var sql = 'select' +
         ' t.id,' +
         't.topic_content,' +
