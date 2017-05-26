@@ -49,12 +49,12 @@ router.post('/', function (req, res, next) {
         case 'del':
             var ids = req.body.ids.split(',').join('\',\'');
             sql = 'delete from t_topic where id in (\'' + ids + '\')';
-            db.executeSql(client, sql, function(result){
+            db.executeSql(client, sql, function (result) {
                 var data = {
                     code: 0,
                     msg: '删除成功'
                 };
-                if(!result){
+                if (!result) {
                     data = {
                         code: 1,
                         msg: '删除失败'
@@ -85,33 +85,67 @@ router.get('/', function (req, res, next) {
         't.topic_date,' +
         't.topic_desc,' +
         't.topic_title,' +
-        't.topic_type , ' +
-        'u.user_name from t_topic t LEFT JOIN t_user u on t.user_id = u.user_id where 1 = 1';
-    if (req.query.title) {
-        sql += ' and t.topic_title like \'%' + req.query.title + '%\'';
-    }
-    if (req.query.postDateStart) {
-        sql += ' and t.topic_date >= \'' + req.query.postDateStart + '\'';
-    }
-    if (req.query.postDateEnd) {
-        sql += ' t.and topic_date <= \'' + req.query.postDateEnd + '\'';
-    }
-    sql += ' ORDER BY t.topic_date DESC;';
-    var client = db.connect();
-    db.executeSql(client, sql, function (result) {
-        var data = {
-            code: 0,
-            msg: '查询成功',
-            data: result
-        };
-        if (!result) {
-            data = {
-                code: 1,
-                msg: '没有数据或查询失败'
+        't.topic_type ';
+    if (req.query.action === 'validateUniqueTitle') {
+        sql += ' from t_topic t where t.topic_title = \'' + req.query.value + '\'';
+        var client = db.connect();
+        db.executeSql(client, sql, function (result) {
+            var data = {
+                code: 0
+            };
+            if (result) {
+                data = {
+                    code: 1
+                };
             }
+            client.end();
+            res.end(JSON.stringify(data));
+        });
+    } else if (req.query.action === 'findById') {
+        sql += ' from t_topic t where t.id = \'' + req.query.id + '\'';
+        var client = db.connect();
+        db.executeSql(client, sql, function (result) {
+            var data = {
+                code: 0,
+                data: result
+            };
+            if (!result) {
+                data = {
+                    code: 1,
+                    msg: '无法通过id查找到对应的记录'
+                };
+            }
+            client.end();
+            res.end(JSON.stringify(data));
+        });
+    } else {
+        sql += ', u.user_name from t_topic t LEFT JOIN t_user u on t.user_id = u.user_id where 1 = 1';
+        if (req.query.title) {
+            sql += ' and t.topic_title like \'%' + req.query.title + '%\'';
         }
-        client.end();
-        res.end(JSON.stringify(data));
-    });
+        if (req.query.postDateStart) {
+            sql += ' and t.topic_date >= \'' + req.query.postDateStart + '\'';
+        }
+        if (req.query.postDateEnd) {
+            sql += ' t.and topic_date <= \'' + req.query.postDateEnd + '\'';
+        }
+        sql += ' ORDER BY t.topic_date DESC;';
+        var client = db.connect();
+        db.executeSql(client, sql, function (result) {
+            var data = {
+                code: 0,
+                msg: '查询成功',
+                data: result
+            };
+            if (!result) {
+                data = {
+                    code: 1,
+                    msg: '没有数据或查询失败'
+                }
+            }
+            client.end();
+            res.end(JSON.stringify(data));
+        });
+    }
 });
 module.exports = router;

@@ -56,6 +56,8 @@ app.use('/topic', require('./routes/topic'));
 app.use('/comment', require('./routes/comment'));
 // 敏感字
 app.use('/sensitiveWord', require('./routes/sensitive-word'));
+// 敏感字
+app.use('/es6', require('./routes/es6'));
 
 
 var webSocket = require('./routes/web-socket').createWebSocket;
